@@ -3,47 +3,7 @@
 
 import socket
 import sys
-
-
-HOST = "localhost"
-PORT = 1237
-ENCODING = "utf-8"
-
-cBASE = "~"
-cMISS = "*"
-cSHIP = "H"
-cHURT = "X"
-cDEAD = "F"
-
-SHOT = "SHOT"
-STOP = "STOP"
-
-MISS = "MISS"
-HURT = "HURT"
-DEAD = "DEAD"
-
-FIELD_FILE = "my_field.txt"
-
-"""
-It must contain field 10x10 like:
-~~~~~~~~H~
-~H~~~~~~~~
-~H~~~HHH~~
-~H~~~~~~~~
-~H~~H~~~~~
-~~~~~~~~~~
-HH~~~~~HH~
-~~~~~H~~~~
-H~~H~~~~~~
-~~~H~~~~~~
-
-HHHH x1
-HHH x2
-HH x3
-H x4
-
-No side and diagonal contact
-"""
+from config import *
 
 
 def check_field(file):
@@ -152,6 +112,7 @@ class Game:
 			return MISS
 		else:
 			self.my_field[y][x] = cHURT
+			pos = (y, x)
 			stack = [pos]
 			# is dead check
 			while (len(stack) > 0):
@@ -167,7 +128,7 @@ class Game:
 						stack.append((new_y, new_x))
 			# is dead check end
 			self.my_field[y][x] = cDEAD
-			self.fill_surroundings(self.my_field, y, x)
+			self.fill_surroundings(self.my_field, (y, x))
 			return DEAD
 		
 	def defence(self):
@@ -177,10 +138,12 @@ class Game:
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
 			sys.exit(0)
 		q = q[0]
+		print("SHOT   >===> {} >===>".format(q))
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		code = self.modify_me(code, y, x)
 		send(self.server, code)
+		self.print_fields()
 		return code != MISS
 
 

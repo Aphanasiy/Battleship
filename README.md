@@ -1,2 +1,0 @@
-# Battleship
-Console battleship playing
