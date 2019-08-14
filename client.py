@@ -52,6 +52,7 @@ def check_field(file):
 		print("There are {} != 10 lines in file".format(len(field)), file=sys.stderr)
 		sys.exit(0)
 	for i in range(10):
+		field[i] = list(field[i].strip())
 		if (len(field[i]) != 10):
 			print("There are {} != 10 cols in line {}".format(len(field[i]), i), file=sys.stderr)
 			sys.exit(0)
@@ -59,7 +60,7 @@ def check_field(file):
 	
 
 class Game:
-	def __init__():
+	def __init__(self):
 		my_field = check_field(FIELD_FILE)
 		enemy_field = [[cBASE for i in range(10)] for j in range(10)]
 		server = socket.socket()
@@ -75,12 +76,13 @@ class Game:
 		else:
 			print("Wrong code: {}", file=sys.stderr)
 			sys.exit(0)
-	def send(trn):
+	def send(self, trn):
 		server.send(bytes(trn), encoding=ENCODING)
-	def get_code():
+	def get_code(self):
 		msg = server.recv(1024)
 		code = msg.decode(ENCODING)
-	def print_fields():
+		return code
+	def print_fields(self):
 		print("  0123456789\t\t  0123456789")
 		c = ord("A")
 		for i in range(10):
@@ -88,7 +90,7 @@ class Game:
 			c += 1
 		return
 
-	def fill_surroundings(field, pos):
+	def fill_surroundings(self, field, pos):
 		stack = [pos]
 		while (len(stack) > 0):
 			cur = stack.pop()
@@ -102,7 +104,7 @@ class Game:
 				elif (field[new_y][new_x] == cHURT):
 					field[new_y][new_x] = cDEAD
 					stack.append((new_y, new_x))
-	def modify_enemy(code, y, x):
+	def modify_enemy(self, code, y, x):
 		if (code == MISS):
 			enemy_field[y][x] = cMISS
 		if (code == HURT):
@@ -110,9 +112,9 @@ class Game:
 		if (code == DEAD):
 			enemy_field[y][x] = cDEAD
 			fill_surroundings(enemy_field, (y, x))
-	def attack():
+	def attack(self):
 		q = input("Enter your shot: ")
-		while (not (len(q) == 2 J and
+		while (not (len(q) == 2 and
 			q[0] in "ABCDEFGHIJ" and
 			q[1] in "0123456789")):
 			q = input("Wrong position. Try again: ")
@@ -128,7 +130,7 @@ class Game:
 		print_fields()
 		return code != MISS  # Your turn continues
 
-	def modify_me(code, y, x):
+	def modify_me(self, code, y, x):
 		if (my_field[y][x] == cBASE):
 			my_field[y][x] = cMISS
 			return MISS
@@ -139,7 +141,7 @@ class Game:
 			stack = [pos]
 			# is dead check
 			while (len(stack) > 0):
-				cur = stack.pop():
+				cur = stack.pop()
 				for i in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
 					new_y = cur[0] + i[0]
 					new_x = cur[1] + i[1]
@@ -156,8 +158,8 @@ class Game:
 		
 
 
-	def defence():
-		code, q* = get_code().split()
+	def defence(self):
+		code, *q = get_code().split()
 		if (msg != SHOT):
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
 			sys.exit(0)
