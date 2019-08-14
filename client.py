@@ -31,6 +31,9 @@ def send(server, trn):
 def get(server):
 	msg = server.recv(1024)
 	code = msg.decode(ENCODING)
+	if (len(msg) == 0):
+		print("Connection is closed.", file=sys.stderr)
+		sys.exit(0)
 	return code
 
 
@@ -55,12 +58,13 @@ class Game:
 		print("You are the {} player".format(code[-1]))
 
 	def print_fields(self):
-		print(NAME.center(12, ' ') + "\t\t" + self.opponent.center(12, ' '))
+		print(NAME.rjust(12, ' ') + "\t\t" + self.opponent.rjust(12, ' '))
 		print("  0123456789\t\t  0123456789")
 		c = ord("A")
 		for i in range(10):
 			print(chr(c)+' '+''.join(self.enemy_field[i])+"\t\t"+chr(c) + ' ' + ''.join(self.my_field[i]))
 			c += 1
+		print("------------\t\t------------")
 		return
 
 	def fill_surroundings(self, field, pos):
@@ -104,9 +108,9 @@ class Game:
 		if (code == STOP):
 			self.finished = 1
 			return 0
-		print(code)
 		self.modify_enemy(code, y, x)
 		self.print_fields()
+		print(code)
 		return code != MISS  # Your turn continues
 
 	def modify_me(self, code, y, x):
