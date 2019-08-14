@@ -1,5 +1,6 @@
 # User configs
 
+NAME = "Aphanasiy"
 FIELD_FILE = "my_field.txt"
 
 """
@@ -25,7 +26,7 @@ No side and diagonal contact
 
 # Network config
 
-HOST = "localhost"
+HOST = "192.168.43.14"
 PORT = 1237
 ENCODING = "utf-8"
 

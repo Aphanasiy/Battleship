@@ -42,8 +42,9 @@ class Game:
 		self.server.connect((HOST, PORT))
 		self.finished = 0
 		self.my_turn = 0
-		send(self.server, "OK")
-		code = get(self.server)
+		send(self.server, NAME)
+		code, self.opponent = get(self.server).split()
+		print("Your opponent is {}".format(self.opponent))
 		if (code == "ST_1"):
 			self.my_turn = 1
 		elif (code == "ST_2"):
@@ -54,10 +55,11 @@ class Game:
 		print("You are the {} player".format(code[-1]))
 
 	def print_fields(self):
+		print(NAME.center(12, ' ') + "\t\t" + self.opponent.center(12, ' '))
 		print("  0123456789\t\t  0123456789")
 		c = ord("A")
 		for i in range(10):
-			print(chr(c)+' '+''.join(self.my_field[i])+"\t\t"+chr(c) + ' ' + ''.join(self.enemy_field[i]))
+			print(chr(c)+' '+''.join(self.enemy_field[i])+"\t\t"+chr(c) + ' ' + ''.join(self.my_field[i]))
 			c += 1
 		return
 
@@ -144,12 +146,14 @@ class Game:
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
 			sys.exit(0)
 		q = q[0]
-		print("SHOT   >===> {} >===>".format(q))
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		code = self.modify_me(code, y, x)
 		send(self.server, code)
+
 		self.print_fields()
+		print("SHOT   >===> {} >===>".format(q))
+		
 		return code != MISS
 
 
