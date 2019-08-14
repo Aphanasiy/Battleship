@@ -91,7 +91,7 @@ class Game:
 	def fill_surroundings(field, pos):
 		stack = [pos]
 		while (len(stack) > 0):
-			cur = stack.pop():
+			cur = stack.pop()
 			for i in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
 				new_y = cur[0] + i[0]
 				new_x = cur[1] + i[1]
