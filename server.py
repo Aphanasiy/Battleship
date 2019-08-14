@@ -45,3 +45,4 @@ while turn != -1:
 		ans = get(conn1)
 		print("1 answers: " + ans)
 		send(conn2, ans)
+	turn ^= 1
