@@ -68,7 +68,7 @@ class Game:
 			for i in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
 				new_y = cur[0] + i[0]
 				new_x = cur[1] + i[1]
-				if (not (0 <= x < 10 and 0 <= y < 10)):
+				if (not (0 <= new_x < 10 and 0 <= new_y < 10)):
 					continue
 				if (field[new_y][new_x] == cBASE):
 					field[new_y][new_x] = cMISS
@@ -120,7 +120,7 @@ class Game:
 				for i in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
 					new_y = cur[0] + i[0]
 					new_x = cur[1] + i[1]
-					if (not (0 <= x < 10 and 0 <= y < 10)):
+					if (not (0 <= new_x < 10 and 0 <= new_y < 10)):
 						continue
 					if (self.my_field[new_y][new_x] == cSHIP):
 						return HURT
