@@ -63,6 +63,7 @@ class Game:
 
 	def fill_surroundings(self, field, pos):
 		stack = [pos]
+		used = set(stack)
 		while (len(stack) > 0):
 			cur = stack.pop()
 			for i in [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]:
@@ -72,9 +73,11 @@ class Game:
 					continue
 				if (field[new_y][new_x] == cBASE):
 					field[new_y][new_x] = cMISS
-				elif (field[new_y][new_x] == cHURT):
+				elif ((new_y, new_x) not in used and 
+					   field[new_y][new_x] == cHURT):
 					field[new_y][new_x] = cDEAD
 					stack.append((new_y, new_x))
+					used = set(pos)
 
 	def modify_enemy(self, code, y, x):
 		if (code == MISS):
@@ -114,6 +117,7 @@ class Game:
 			self.my_field[y][x] = cHURT
 			pos = (y, x)
 			stack = [pos]
+			used = set(stack)
 			# is dead check
 			while (len(stack) > 0):
 				cur = stack.pop()
@@ -124,8 +128,10 @@ class Game:
 						continue
 					if (self.my_field[new_y][new_x] == cSHIP):
 						return HURT
-					elif (self.my_field[new_y][new_x] == cHURT):
+					elif ((new_y, new_x) not in used and 
+						  self.my_field[new_y][new_x] == cHURT):
 						stack.append((new_y, new_x))
+						used.add((new_y, new_x))
 			# is dead check end
 			self.my_field[y][x] = cDEAD
 			self.fill_surroundings(self.my_field, (y, x))
