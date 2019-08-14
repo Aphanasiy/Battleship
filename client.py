@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+
 import socket
 import sys
 
@@ -75,8 +78,8 @@ class Game:
 		self.server.connect((HOST, PORT))
 		self.finished = 0
 		self.my_turn = 0
-		send("OK")
-		code = get_code(self.server)
+		send(self.server, "OK")
+		code = get(self.server)
 		if (code == "ST_1"):
 			self.my_turn = 1
 		elif (code == "ST_2"):
@@ -126,7 +129,7 @@ class Game:
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		self.send(self.server, "SHOT {}".format(q))
-		code = self.get_code()
+		code = self.get(self.server)
 		if (code == STOP):
 			self.finished = 1
 			return 0
@@ -162,10 +165,11 @@ class Game:
 			return DEAD
 		
 	def defence(self):
-		code, *q = get_code().split()
-		if (msg != SHOT):
+		code, *q = get(self.server).split()
+		if (code != SHOT):
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
 			sys.exit(0)
+		q = q[0]
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		code = modify_me(code, y, x)
