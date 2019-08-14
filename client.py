@@ -15,12 +15,9 @@ cSHIP = "H"
 cHURT = "X"
 cDEAD = "F"
 
-<<<<<<< HEAD
 SHOT = "SHOT"
 STOP = "STOP"
 
-=======
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 MISS = "MISS"
 HURT = "HURT"
 DEAD = "DEAD"
@@ -66,10 +63,7 @@ def check_field(file):
 			print("There are {} != 10 cols in line {}".format(len(field[i]), i), file=sys.stderr)
 			sys.exit(0)
 	#There must be also a contact and fleet check
-<<<<<<< HEAD
 	return field
-=======
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 
 
 def send(server, trn):
@@ -129,11 +123,7 @@ class Game:
 			self.enemy_field[y][x] = cHURT
 		if (code == DEAD):
 			self.enemy_field[y][x] = cDEAD
-<<<<<<< HEAD
 			self.fill_surroundings(self.enemy_field, (y, x))
-=======
-			fill_surroundings(self.enemy_field, (y, x))
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 
 	def attack(self):
 		print("We are shooting, my captain!")
@@ -145,22 +135,13 @@ class Game:
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		send(self.server, "SHOT {}".format(q))
-<<<<<<< HEAD
 		code = get(self.server)
-=======
-		code = self.get(self.server)
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 		if (code == STOP):
 			self.finished = 1
 			return 0
 		print(code)
-<<<<<<< HEAD
 		self.modify_enemy(code, y, x)
 		self.print_fields()
-=======
-		modify_enemy(code, y, x)
-		print_fields()
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 		return code != MISS  # Your turn continues
 
 	def modify_me(self, code, y, x):
@@ -186,11 +167,7 @@ class Game:
 						stack.append((new_y, new_x))
 			# is dead check end
 			self.my_field[y][x] = cDEAD
-<<<<<<< HEAD
 			self.fill_surroundings(self.my_field, y, x)
-=======
-			fill_surroundings(self.my_field, y, x)
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 			return DEAD
 		
 	def defence(self):
@@ -202,11 +179,7 @@ class Game:
 		q = q[0]
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
-<<<<<<< HEAD
 		code = self.modify_me(code, y, x)
-=======
-		code = modify_me(code, y, x)
->>>>>>> 4543eabe34c34686248d8573596a8812215d49b3
 		send(self.server, code)
 		return code != MISS
 
