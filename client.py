@@ -87,6 +87,7 @@ class Game:
 		else:
 			print("Wrong code: {}", file=sys.stderr)
 			sys.exit(0)
+		print("You are the {} player".format(code[-1]))
 
 	def print_fields(self):
 		print("  0123456789\t\t  0123456789")
@@ -121,6 +122,7 @@ class Game:
 			fill_surroundings(self.enemy_field, (y, x))
 
 	def attack(self):
+		print("We are shooting, my captain!")
 		q = input("Enter your shot: ")
 		while (not (len(q) == 2 and
 			q[0] in "ABCDEFGHIJ" and
@@ -128,7 +130,7 @@ class Game:
 			q = input("Wrong position. Try again: ")
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
-		self.send(self.server, "SHOT {}".format(q))
+		send(self.server, "SHOT {}".format(q))
 		code = self.get(self.server)
 		if (code == STOP):
 			self.finished = 1
@@ -165,6 +167,7 @@ class Game:
 			return DEAD
 		
 	def defence(self):
+		print("Now we are waiting for enemy attack!")
 		code, *q = get(self.server).split()
 		if (code != SHOT):
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
@@ -173,7 +176,7 @@ class Game:
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		code = modify_me(code, y, x)
-		self.send(self.server, code)
+		send(self.server, code)
 		return code != MISS
 
 
