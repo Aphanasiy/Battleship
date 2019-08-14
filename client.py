@@ -3,26 +3,8 @@
 
 import socket
 import sys
+from config import *
 
-
-HOST = "localhost"
-PORT = 1237
-ENCODING = "utf-8"
-
-cBASE = "~"
-cMISS = "*"
-cSHIP = "H"
-cHURT = "X"
-cDEAD = "F"
-
-SHOT = "SHOT"
-STOP = "STOP"
-
-MISS = "MISS"
-HURT = "HURT"
-DEAD = "DEAD"
-
-FIELD_FILE = "my_field.txt"
 
 """
 It must contain field 10x10 like:
