@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+
+
 import socket
 import sys
 
@@ -11,6 +14,9 @@ cMISS = "*"
 cSHIP = "H"
 cHURT = "X"
 cDEAD = "F"
+
+SHOT = "SHOT"
+STOP = "STOP"
 
 MISS = "MISS"
 HURT = "HURT"
@@ -57,6 +63,7 @@ def check_field(file):
 			print("There are {} != 10 cols in line {}".format(len(field[i]), i), file=sys.stderr)
 			sys.exit(0)
 	#There must be also a contact and fleet check
+	return field
 
 
 def send(server, trn):
@@ -75,8 +82,8 @@ class Game:
 		self.server.connect((HOST, PORT))
 		self.finished = 0
 		self.my_turn = 0
-		send("OK")
-		code = get_code(self.server)
+		send(self.server, "OK")
+		code = get(self.server)
 		if (code == "ST_1"):
 			self.my_turn = 1
 		elif (code == "ST_2"):
@@ -84,6 +91,7 @@ class Game:
 		else:
 			print("Wrong code: {}", file=sys.stderr)
 			sys.exit(0)
+		print("You are the {} player".format(code[-1]))
 
 	def print_fields(self):
 		print("  0123456789\t\t  0123456789")
@@ -115,9 +123,10 @@ class Game:
 			self.enemy_field[y][x] = cHURT
 		if (code == DEAD):
 			self.enemy_field[y][x] = cDEAD
-			fill_surroundings(self.enemy_field, (y, x))
+			self.fill_surroundings(self.enemy_field, (y, x))
 
 	def attack(self):
+		print("We are shooting, my captain!")
 		q = input("Enter your shot: ")
 		while (not (len(q) == 2 and
 			q[0] in "ABCDEFGHIJ" and
@@ -125,14 +134,14 @@ class Game:
 			q = input("Wrong position. Try again: ")
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
-		self.send(self.server, "SHOT {}".format(q))
-		code = self.get_code()
+		send(self.server, "SHOT {}".format(q))
+		code = get(self.server)
 		if (code == STOP):
 			self.finished = 1
 			return 0
 		print(code)
-		modify_enemy(code, y, x)
-		print_fields()
+		self.modify_enemy(code, y, x)
+		self.print_fields()
 		return code != MISS  # Your turn continues
 
 	def modify_me(self, code, y, x):
@@ -158,18 +167,20 @@ class Game:
 						stack.append((new_y, new_x))
 			# is dead check end
 			self.my_field[y][x] = cDEAD
-			fill_surroundings(self.my_field, y, x)
+			self.fill_surroundings(self.my_field, y, x)
 			return DEAD
 		
 	def defence(self):
-		code, *q = get_code().split()
-		if (msg != SHOT):
+		print("Now we are waiting for enemy attack!")
+		code, *q = get(self.server).split()
+		if (code != SHOT):
 			print("SHOT expected, but {} found".format(code), file=sys.stderr)
 			sys.exit(0)
+		q = q[0]
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
-		code = modify_me(code, y, x)
-		self.send(self.server, code)
+		code = self.modify_me(code, y, x)
+		send(self.server, code)
 		return code != MISS
 
 

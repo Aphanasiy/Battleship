@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import sys
 import socket
 
@@ -26,6 +28,9 @@ def get(sock):
 
 send(conn1, "ST_1")
 send(conn2, "ST_2")
+if (get(conn1) != "OK" or get(conn2) != "OK"):
+	print("OK FAIL", file=sys.stderr)
+	sys.exit(0)
 turn = 1
 while turn != -1:
 	if (turn):
