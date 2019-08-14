@@ -2,6 +2,7 @@
 
 FIELD_FILE = "my_field.txt"
 
+<<<<<<< HEAD
 """
 It must contain field 10x10 like:
 ~~~~~~~~H~
@@ -23,6 +24,8 @@ H x4
 No side and diagonal contact
 """
 
+=======
+>>>>>>> master
 # Network config
 
 HOST = "localhost"

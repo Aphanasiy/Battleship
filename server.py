@@ -7,10 +7,7 @@ from config import *
 sock = socket.socket()
 
 
-
-PORT = 1237
-ENCODING = "utf-8"
-sock.bind(("", PORT))
+sock.bind((HOST, PORT))
 
 sock.listen(2)
 conn1, addr1 = sock.accept()
