@@ -37,6 +37,8 @@ while turn != -1:
 		send(conn2, shot)
 		ans = get(conn2)
 		print("2 answers: " + ans)
+		if (ans not in {HURT, DEAD}):
+			turn ^= 1
 		send(conn1, ans)
 	else:
 		shot = get(conn2)
@@ -44,5 +46,6 @@ while turn != -1:
 		send(conn1, shot)
 		ans = get(conn1)
 		print("1 answers: " + ans)
+		if (ans not in {HURT, DEAD}):
+			turn ^= 1
 		send(conn2, ans)
-	turn ^= 1
