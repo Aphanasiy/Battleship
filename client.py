@@ -22,7 +22,52 @@ def check_field(file):
 		if (len(field[i]) != 10):
 			print("There are {} != 10 cols in line {}".format(len(field[i]), i), file=sys.stderr)
 			sys.exit(0)
-	#There must be also a contact and fleet check
+	# There must be also a contact and fleet check
+	# Contact check
+	for i in range(10 - 1):
+		for j in range(10 - 1):
+			if (field[i][j] == cSHIP and field[i + 1][j + 1] == cSHIP):
+				print("CONTACT CHECK FAILED at field[{}][{}] and field[{}][{}]".format(i, j, i + 1, j + 1), file=sys.stderr)
+				print('.' * 4 + '\n' + '.' + field[i][j] + field[i][j + 1] + '.\n.' + field[i + 1][j] + field[i + 1][j + 1] + '.\n' + '....')
+				sys.exit(0)
+	for i in range(10 - 1):
+		for j in range(1, 10):
+			if (field[i][j] == cSHIP and field[i + 1][j - 1] == cSHIP):
+				print("CONTACT CHECK FAILED at field[{}][{}] and field[{}][{}]".format(i, j, i + 1, j - 1), file=sys.stderr)
+				print('.' * 4 + '\n' + '.' + field[i][j - 1] + field[i][j] + '.\n.' + field[i + 1][j - 1] + field[i + 1][j] + '.\n' + '....')
+				sys.exit(0)
+	
+	used_pos = set()
+	used_sz = dict()
+	def dfs(field, pos):
+		stack = [(pos)]
+		used_pos.add(pos)
+		cnt = 0
+		while (len(stack) > 0):
+			cur = stack.pop()
+			cnt += 1
+			for i in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
+				new_y = cur[0] + i[0]
+				new_x = cur[1] + i[1]
+				if (not (0 <= new_x < 10 and 0 <= new_y < 10)):
+					continue
+				if ((new_y, new_x) not in used_pos and 
+					field[new_y][new_x] == cSHIP):
+					stack.append((new_y, new_x))
+					used_pos.add((new_y, new_x))
+		return cnt
+
+	for i in range(10):
+		for j in range(10):
+			if (field[i][j] == cSHIP and (i, j) not in used_pos):
+				cnt = dfs(field, (i, j))
+				if cnt not in used_sz:
+					used_sz[cnt] = 0
+				used_sz[cnt] += 1
+	if (used_sz != FLEET):
+		print("Your fleet isn't standart\n", file=sys.stderr)
+		print("You have: ", used_sz, file=sys.stderr)
+		print("Must be: ", FLEET, file=sys.stderr)
 	return field
 
 
@@ -64,7 +109,7 @@ class Game:
 		for i in range(10):
 			print(chr(c)+' '+''.join(self.enemy_field[i])+"\t\t"+chr(c) + ' ' + ''.join(self.my_field[i]))
 			c += 1
-		print("------------\t\t------------")
+		print("____________\t\t____________")
 		return
 
 	def fill_surroundings(self, field, pos):

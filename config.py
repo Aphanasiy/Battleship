@@ -2,6 +2,12 @@
 
 NAME = "Aphanasiy"
 FIELD_FILE = "my_field.txt"
+FLEET = {
+	1: 4,
+	2: 3,
+	3: 2,
+	4: 1,
+}
 
 """
 It must contain field 10x10 like:
