@@ -90,6 +90,7 @@ class Game:
 		self.server.connect((HOST, PORT))
 		self.finished = 0
 		self.my_turn = 0
+		self.alive = sum([FLEET[x] * x for x in FLEET])
 		send(self.server, NAME)
 		code, self.opponent = get(self.server).split()
 		print("Your opponent is {}".format(self.opponent))
@@ -151,6 +152,8 @@ class Game:
 		send(self.server, "SHOT {}".format(q))
 		code = get(self.server)
 		if (code == STOP):
+			print("CONGRATULATIONS, MY COMMANDER!")
+			print("YOU WON!")
 			self.finished = 1
 			return 0
 		self.modify_enemy(code, y, x)
@@ -198,11 +201,19 @@ class Game:
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		code = self.modify_me(code, y, x)
+		if (code != MISS):
+			self.alive -= 1
+		if (not self.alive):
+			code = STOP
+			self.finished = 1
 		send(self.server, code)
 
 		self.print_fields()
 		print("SHOT   >===> {} >===>".format(q))
-		
+		if (not self.alive):
+			print("Sorry, comander, we losed...")
+			print("Next time the faith will be on our side!")
+			sys.exit(0)
 		return code != MISS
 
 
