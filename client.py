@@ -7,6 +7,7 @@ from config import *
 
 
 def argparsing():
+	global PORT, FIELD_FILE
 	k = sys.argv
 	if ("-h" in k or "--help" in k):
 		print("""
@@ -131,7 +132,7 @@ class Game:
 		print("You are the {} player".format(code[-1]))
 
 	def print_fields(self):
-		print(NAME.rjust(12, ' ') + "\t\t" + self.opponent.rjust(12, ' '))
+		print(self.opponent.rjust(12, ' ') + "\t\t" + NAME.rjust(12, ' '))
 		print("  0123456789\t\t  0123456789")
 		c = ord("A")
 		for i in range(10):

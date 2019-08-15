@@ -19,6 +19,7 @@ def get(sock):
 
 
 def argparsing():
+	global PORT
 	k = sys.argv
 	if ("-h" in k or "--help" in k):
 		print("""
@@ -46,7 +47,7 @@ class Fields:
 		self.fields = [[[cBASE for i in range(10)] for j in range(10)] for k in range(2)]
 		self.names = [name1, name2]
 	def print_fields(self):
-		print(self.names[0].rjust(12, ' ') + "\t\t" + self.names[1].rjust(12, ' '))
+		print(self.names[1].rjust(12, ' ') + "\t\t" + self.names[0].rjust(12, ' '))
 		print("  0123456789\t\t  0123456789")
 		c = ord("A")
 		for i in range(10):

@@ -19,6 +19,7 @@ def get(sock):
 
 
 def argparsing():
+	global PORT
 	k = sys.argv
 	if ("-h" in k or "--help" in k):
 		print("""
