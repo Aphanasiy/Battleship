@@ -79,14 +79,13 @@ class Fields:
 			self.fields[i][y][x] = cMISS
 		if (code == HURT):
 			self.fields[i][y][x] = cHURT
-		if (code == DEAD):
+		if (code == DEAD or code == STOP):
 			self.fields[i][y][x] = cDEAD
 			self.fill_surroundings(self.fields[i], (y, x))
 
 	def attack(self, defender, q, code):
 		if (code == STOP):
-			print(self.name[defender^1] + " Won. Congrutulations to winner!")
-			return
+			print(self.names[defender] + " Won. Congrutulations to winner!")
 		y = ord(q[0]) - ord('A')
 		x = ord(q[1]) - ord('0')
 		self.modify_player(code, defender, y, x)
@@ -123,7 +122,9 @@ def game(name1, conn1, addr1, name2, conn2, addr2):
 			if (ans not in {HURT, DEAD}):
 				turn ^= 1
 			send(conn2, ans)
-
+		if (ans == STOP):
+			sys.exit(0)
+		
 
 sock = socket.socket()
 sock.bind(("", PORT))

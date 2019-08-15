@@ -165,12 +165,13 @@ class Game:
 			self.enemy_field[y][x] = cMISS
 		if (code == HURT):
 			self.enemy_field[y][x] = cHURT
-		if (code == DEAD):
+		if (code == DEAD or code == STOP):
 			self.enemy_field[y][x] = cDEAD
 			self.fill_surroundings(self.enemy_field, (y, x))
 
 	def attack(self):
 		print("We are shooting, my captain!")
+		## BE AWARE OF MISSSHOT PROBLEM!!!
 		q = input("Enter your shot: ")
 		while (not (len(q) == 2 and
 			q[0] in "ABCDEFGHIJ" and
@@ -180,14 +181,14 @@ class Game:
 		x = ord(q[1]) - ord('0')
 		send(self.server, "SHOT {}".format(q))
 		code = get(self.server)
+		self.modify_enemy(code, y, x)
+		self.print_fields()
+		print(code)
 		if (code == STOP):
 			print("CONGRATULATIONS, MY COMMANDER!")
 			print("YOU WON!")
 			self.finished = 1
 			return 0
-		self.modify_enemy(code, y, x)
-		self.print_fields()
-		print(code)
 		return code != MISS  # Your turn continues
 
 	def modify_me(self, code, y, x):
@@ -238,7 +239,7 @@ class Game:
 		send(self.server, code)
 
 		self.print_fields()
-		print("SHOT   >===> {} >===>".format(q))
+		print("SHOT   >===> {} >===> {}  ".format(q, code))
 		if (not self.alive):
 			print("Sorry, comander, we losed...")
 			print("Next time the faith will be on our side!")
