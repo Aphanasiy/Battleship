@@ -18,6 +18,29 @@ def get(sock):
 	return msg
 
 
+def argparsing():
+	k = sys.argv
+	if ("-h" in k or "--help" in k):
+		print("""
+    It's server for console Battleship.
+    Look at config.py for more detailed settings.
+    
+    This app has some arguements:
+    \t -h, --help               - printing this message
+    \t -p, --port  =<PORT>      - changing of listened port
+""")
+		sys.exit(0)
+		return 0
+
+	for i in k:
+		if (i[:2] == "-p" or i[:6] == "--port"):
+			p = i.split("=")
+			PORT = int(p[1])
+
+
+argparsing()
+
+
 class Fields:
 	def __init__(self, name1, name2):
 		self.fields = [[[cBASE for i in range(10)] for j in range(10)] for k in range(2)]
