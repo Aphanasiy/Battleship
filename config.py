@@ -1,3 +1,10 @@
+# Network config
+
+HOST = "localhost"
+PORT = 1237
+ENCODING = "utf-8"
+
+
 # User configs
 
 NAME = "Aphanasiy"
@@ -22,19 +29,9 @@ HH~~~~~HH~
 H~~H~~~~~~
 ~~~H~~~~~~
 
-HHHH x1
-HHH x2
-HH x3
-H x4
-
 No side and diagonal contact
 """
 
-# Network config
-
-HOST = "192.168.43.14"
-PORT = 1237
-ENCODING = "utf-8"
 
 ## Field display config
 
