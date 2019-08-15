@@ -8,7 +8,7 @@ ENCODING = "utf-8"
 # User configs
 
 NAME = "Aphanasiy"
-FIELD_FILE = "my_field.txt"
+FIELD_FILE = "field/main.txt"
 FLEET = {
 	1: 4,
 	2: 3,
