@@ -38,7 +38,7 @@ def check_field(file):
 	try:
 		fld = open(file, 'r')
 	except:
-		print("No file {} in directory", file=sys.stderr)
+		print("No file {} in directory".format(FIELD_FILE), file=sys.stderr)
 		sys.exit(0)
 	field = fld.readlines()
 	fld.close()
@@ -96,6 +96,7 @@ def check_field(file):
 		print("Your fleet isn't standart\n", file=sys.stderr)
 		print("You have: ", used_sz, file=sys.stderr)
 		print("Must be: ", FLEET, file=sys.stderr)
+		sys.exit(0)
 	return field
 
 
