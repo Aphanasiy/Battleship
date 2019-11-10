@@ -1,13 +1,13 @@
 # Network config
 
-HOST = "localhost"
+HOST = "172.21.129.118"
 PORT = 1237
 ENCODING = "utf-8"
 
 
 # User configs
 
-NAME = "Aphanasiy"
+NAME = "No name"
 FIELD_FILE = "fields/main.txt"
 FLEET = {
 	1: 4,
@@ -48,4 +48,6 @@ STOP = "STOP"
 MISS = "MISS"
 HURT = "HURT"
 DEAD = "DEAD"
+
+VERSION = "0.3.1"
 

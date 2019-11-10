@@ -104,7 +104,8 @@ class ServerGame:
 
 class ClientGame:
     def __init__(self):
-        self.my_field = check_field(FIELD_FILE)
+        settings_check()
+        self.my_field = field_check(FIELD_FILE)
         self.enemy_field = [[cBASE for i in range(10)] for j in range(10)]
         self.server = socket.socket()
         self.server.connect((HOST, PORT))
@@ -112,7 +113,8 @@ class ClientGame:
         self.my_turn = 0
         self.alive = sum([FLEET[x] * x for x in FLEET])
         send(self.server, NAME)
-        code, self.opponent = get(self.server).split()
+        code, *opponent = get(self.server).split()
+        self.opponent = ' '.join(opponent)
         print("Your opponent is {}".format(self.opponent))
         if (code == "ST_1"):
             self.my_turn = 1
@@ -238,8 +240,14 @@ class ClientGame:
         return code != MISS
 
 
+def settings_check():
+    global NAME
+    if (len(NAME) > 12):
+        print("Your name is too long. Shrink it to 12 symbols!")
+        sys.exit(0)
 
-def check_field(file):
+
+def field_check(file):
     try:
         fld = open(file, 'r')
     except:
